@@ -16,13 +16,13 @@ The RDFJS interface is a low-level interface specification. Next to the core-mod
 
 * **Parsers & serializers**: RDF is a data model and unlike other data models it is not bound to a particular serialization. There are many different formats available, some are plaintext based, others are JSON or XML based or even a binary file. In general one can convert each serialization to another one without any loss of data. Parser and serialiser modules implement the specification of each format and transform it from/to an RDFJS interface structure. Always use these parsers and serializers and avoid doing this in your own code.
 
-* **Stores**: Stores provide a way to persist RDFJS interface structures. This can be a simple in-memory store or a persistent backend RDF graph databases (for example a SPARQL endpoint). Each store implements the same abstract interface, if you start with an in-memory store it is easy to switch to a more persistent layer by simply choosing another store implementation. No other code changes are necessary.
+* **Stores**: Stores provide a way to persist RDFJS interface structures. This can be a simple in-memory store or a persistent backend in an RDF graph database (for example a SPARQL endpoint). Each store implements the same abstract interface, if you start with an in-memory store it is easy to switch to a more persistent layer by simply choosing another store implementation. No other code changes are necessary.
 
 In many cases developers want to work with simpler interfaces to reduce code complexity and focus on solving problems using RDF. For that reason we introduce modules that are built on top of `rdf-ext`:
 
 * **Dataset**: Dataset is a (work in progress) specification of a high-level interface on top of RDFJS interface specification. It provides additional functions that facilitate interacting with RDF data. Unless you have a good reason to do so, this is the library you want to start working with.
 
-* **Helpers**: Helpers provide abstractions for common tasks in the RDF programming world exposed as simple interfaces.
+* **Helpers**: Helpers provide abstractions for common tasks in the RDF programming world exposed as simple interfaces. While you could code everything helpers do on your own, you save quite some lines of code for particular tasks.
 
 ## What are the other packages, what do they do
 
