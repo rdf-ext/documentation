@@ -20,9 +20,43 @@ The RDFJS interface is a low-level interface specification. Next to the core-mod
 
 In many cases developers want to work with simpler interfaces to reduce code complexity and focus on solving problems using RDF. For that reason we introduce modules that are built on top of `rdf-ext`:
 
-* **Dataset**: Dataset is a (work in progress) specification of a high-level interface on top of RDFJS interface specification. It provides additional functions that facilitate interacting with RDF data. Unless you have a good reason to do so, this is the library you want to start working with.
+* **Dataset**: Dataset is a (work in progress) specification of a high-level interface on top of RDFJS interface specification. It provides additional functions that facilitate interacting with RDF data. Unless you have a good reason to do so, *this is the library you want to start working with.*
 
 * **Helpers**: Helpers provide abstractions for common tasks in the RDF programming world exposed as simple interfaces. While you could code everything helpers do on your own, you save quite some lines of code for particular tasks.
+
+## Basics
+
+Note that we only explain our libraries in this document. If you don't understand a particular RDF concept, please follow on the links provided within the text to learn more about it.
+
+```javascript
+const rdf = require('rdf-ext')
+
+let subject = rdf.namedNode('http://example.org/subject') 
+let predicate = rdf.namedNode('http://example.org/predicate')
+let object = rdf.literal('object')
+
+let quad = rdf.quad(subject, predicate, object)
+
+// log the triples to console with toString()
+// note that this is N-Triples serialization by defiition
+console.log(quad.toString())
+```
+
+In this example we start with an `rdf` object from the `rdf-ext` package. We then create a [subject, a predicate and an object](https://www.w3.org/TR/rdf11-primer/#section-triple). As always with RDF, subject and predicate need to be [IRIs](https://www.w3.org/TR/rdf11-primer/#section-IRI). The object can either be an IRI or a [literal](https://www.w3.org/TR/rdf11-primer/#section-literal), as in our example.
+
+We then assign the triple to a quad object. This represents the [graph-concept in RDF 1.1](https://www.w3.org/TR/rdf11-primer/#section-multiple-graphs) and can be omitted. In this case the triple is simply added to the so-called "[default graph](http://rdf.js.org/#dom-quad-graph)".
+
+In the last line we use `quad.toString()` to log the triple/quad to the console. Note that for a triple this is always [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
+
+If you want to create a [blank node](https://www.w3.org/TR/rdf11-primer/#section-blank-node) instead of a named-node, simply use the `blankNode` function:
+
+```javascript
+let bnode = rdf.blankNode()
+```
+
+You obviously have to use this identifier both as subject and object if you want to create a proper graph structure.
+
+
 
 ## What are the other packages, what do they do
 
