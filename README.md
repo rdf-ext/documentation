@@ -28,6 +28,8 @@ In many cases developers want to work with simpler interfaces to reduce code com
 
 Note that we only explain our libraries in this document. If you don't understand a particular RDF concept, please follow on the links provided within the text to learn more about it.
 
+### Create a triple/quad
+
 ```javascript
 const rdf = require('rdf-ext')
 
@@ -38,7 +40,7 @@ let object = rdf.literal('object')
 let quad = rdf.quad(subject, predicate, object)
 
 // log the triples to console with toString()
-// note that this is N-Triples serialization by defiition
+// note that this is N-Triples/N-Quads serialization in rdf-ext
 console.log(quad.toString())
 ```
 
@@ -46,7 +48,7 @@ In this example we start with an `rdf` object from the `rdf-ext` package. We the
 
 We then assign the triple to a quad object. This represents the [graph-concept in RDF 1.1](https://www.w3.org/TR/rdf11-primer/#section-multiple-graphs) and can be omitted. In this case the triple is simply added to the so-called "[default graph](http://rdf.js.org/#dom-quad-graph)".
 
-In the last line we use `quad.toString()` to log the triple/quad to the console. Note that for a triple this is always [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
+In the last line we use `quad.toString()` to log the triple/quad to the console. In rdf-ext for a triple this is always [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
 
 If you want to create a [blank node](https://www.w3.org/TR/rdf11-primer/#section-blank-node) instead of a named-node, simply use the `blankNode` function:
 
@@ -55,6 +57,36 @@ let bnode = rdf.blankNode()
 ```
 
 You obviously have to use this identifier both as subject and object if you want to create a proper graph structure.
+
+### Work with triples
+
+Most of the time we want to work with more than one triples so we need to have some kind of container where we can add multiple triples. While one could do that manually by using arrays, a more suitable structure is `dataset`. By using this structure you get several useful functions, for example for matching triples. Also you do not have to take care of duplicate detection so you won't have the same triple twice in your data.
+
+Let us describe a person, in particular the [Sheldon Cooper](https://en.wikipedia.org/wiki/Sheldon_Cooper) from the TV series The Big Bang Theory. We maintain triples about him in a specific GitHub repository, see [here](https://github.com/zazuko/tbbt-ld/blob/master/data/person/sheldon-cooper.ttl). We will mainly use [schema.org/Person](https://schema.org/Person) as vocabulary in this example.
+
+```javascript
+const rdf = require('rdf-ext')
+
+// create a new dataset using the rdf-ext factory
+let dataset = rdf.dataset()
+let bnode = rdf.blankNode()
+
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/givenName'), rdf.literal('Sheldon')))
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/familyName'), rdf.literal('Cooper')))
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/address'), bnode))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressCountry'), rdf.literal('US')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressLocality'), rdf.literal('Pasadena')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressRegion'), rdf.literal('CA')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/postalCode'), rdf.literal('91104')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/streetAddress'), rdf.literal('2311 North Los Robles Avenue, Aparment 4A')))
+
+// log the triples to console with toString()
+// note that this is N-Triples serialization in rdf-ext
+console.log(dataset.toString())
+
+```
+
+
 
 
 
