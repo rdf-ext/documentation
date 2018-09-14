@@ -86,7 +86,34 @@ console.log(dataset.toString())
 
 ```
 
+This was fun but not what we do all the time in code. It is way more common to load Triples from any RDF serialization and do something with it.
 
+### Parse triples from a file
+
+By installing the npm package `tbbt-ld` you will get several characters of The Big Bang Theory described in [Turtle](https://www.w3.org/TR/turtle/) format. By using the parser package `rdf-parser-n3` we can parse it into a dataset structure. Note that the [N3 parser](https://github.com/rdfjs/N3.js) (used by `rdf-parser-n3`) can parse [Turtle](https://www.w3.org/TR/turtle/), [TriG](https://www.w3.org/TR/trig/), [N-Triples](https://www.w3.org/TR/n-triples/), [N-Quads](https://www.w3.org/TR/n-quads/), and [Notation3 (N3)](https://www.w3.org/TeamSubmission/n3/). 
+
+```javascript
+const fs = require('fs')
+const rdf = require('rdf-ext')
+const N3Parser = require('rdf-parser-n3')
+
+// create N3 parser instance
+let parser = new N3Parser({factory: rdf})
+
+// Read a Turtle file and stream it to the parser
+let quadStream = parser.import(fs.createReadStream('./node_modules/tbbt-ld/data/person/sheldon-cooper.ttl'))
+
+// create a new dataset and import the quad stream into it (reverse pipe) with Promise API
+rdf.dataset().import(quadStream).then((dataset) => {
+  // loop over all quads an write them to the console
+  dataset.forEach((quad) => {
+    console.log(quad.toString())
+  })
+})
+
+```
+
+ 
 
 
 
