@@ -4,13 +4,13 @@
 
 Rdf-ext is a JavaScript library for working with RDF. RDF is a graph data model by the [W3C](https://www.w3.org/standards/semanticweb/) and is widely implemented. If you are new to RDF have a look at our [Linked Data Training](https://github.com/zazuko/linked-data-training/blob/master/Resources.md), we assume some basic knowledge of RDF and its data model in this documentation.
 
-## What is the spec, where is the spec, why is there a spec
+## What is the RDFJS specification
 
 For many years there were multiple RDF libraries and interfaces available in the JavaScript world. In 2013 the [RDF JavaScript Libraries Community Group](https://www.w3.org/community/rdfjs/) was initiated. A result of this group is the [RDFJS specification](http://rdf.js.org/), a low-level interface for working with RDF and Linked Data in ECMAScript platforms like Web browsers and Node.js.
 
 All libraries described in this document are based on the RDFJS interface and read/write data structures defined in this specification.
 
-## What are the main packages, what do they do
+## What are the main packages & what do they do
 
 The RDFJS interface is a low-level interface specification. Next to the core-module `rdf-ext` we provide several other module categories that use the same interface:
 
@@ -90,7 +90,7 @@ This was fun but not what we do all the time in code. It is way more common to l
 
 ### Parse triples from a file
 
-By installing the npm package `tbbt-ld` you will get several characters of The Big Bang Theory described in [Turtle](https://www.w3.org/TR/turtle/) format. By using the parser package `rdf-parser-n3` we can parse it into a dataset structure. Note that the [N3 parser](https://github.com/rdfjs/N3.js) (used by `rdf-parser-n3`) can parse [Turtle](https://www.w3.org/TR/turtle/), [TriG](https://www.w3.org/TR/trig/), [N-Triples](https://www.w3.org/TR/n-triples/), [N-Quads](https://www.w3.org/TR/n-quads/), and [Notation3 (N3)](https://www.w3.org/TeamSubmission/n3/). 
+By installing the npm package `tbbt-ld` you will get several characters of The Big Bang Theory described in [Turtle](https://www.w3.org/TR/turtle/) format. By using the parser package `rdf-parser-n3` we can parse it into a dataset structure. Note that the [N3 parser](https://github.com/rdfjs/N3.js) (used by `rdf-parser-n3`) can parse [Turtle](https://www.w3.org/TR/turtle/), [TriG](https://www.w3.org/TR/trig/), [N-Triples](https://www.w3.org/TR/n-triples/), [N-Quads](https://www.w3.org/TR/n-quads/), and [Notation3 (N3)](https://www.w3.org/TeamSubmission/n3/).
 
 ```javascript
 const fs = require('fs')
@@ -113,7 +113,17 @@ rdf.dataset().import(quadStream).then((dataset) => {
 
 ```
 
- 
+ Additional parsers available:
+
+* [JSON-LD](https://github.com/rdfjs/parser-jsonld)
+
+  * [Example for Node.js](https://github.com/rdf-ext/rdf-examples/blob/develop/parse-jsonld-to-dataset.js)
+
+  * [Example for browser](https://github.com/rdf-ext/rdf-examples/blob/develop/parse-jsonld-to-dataset.html)
+
+* [RDF/XML](RDF/XML)
+
+### Serialize triples
 
 
 
@@ -137,13 +147,7 @@ rdf.dataset().import(quadStream).then((dataset) => {
 
 After that: Same thing but for the rest of the packages.
 
-### [`parser-jsonld`](https://github.com/rdfjs/parser-jsonld)
-
-### [`parser-n3`](https://github.com/rdfjs/parser-n3)
-
 ### [`comunica-browser`](https://github.com/rdfjs/comunica-browser)
-
-### [`N3.js`](https://github.com/rdfjs/N3.js)
 
 ### [`data-model`](https://github.com/rdfjs/data-model)
 
