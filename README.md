@@ -2,11 +2,11 @@
 
 ## What is rdf-ext
 
-Rdf-ext is a JavaScript library for working with RDF. RDF is a graph data model by the [W3C](https://www.w3.org/standards/semanticweb/) and is widely implemented. If you are new to RDF have a look at our [Linked Data Training](https://github.com/zazuko/linked-data-training/blob/master/Resources.md), we assume some basic knowledge of RDF and its data model in this documentation.
+Rdf-ext is a JavaScript library for working with RDF. RDF is a graph data model defined by the [W3C](https://www.w3.org/standards/semanticweb/) and is widely implemented. If you are new to RDF have a look at our [Linked Data Training](https://github.com/zazuko/linked-data-training/blob/master/Resources.md), we assume some basic knowledge of RDF and its data model in this documentation.
 
 ## What is the RDFJS specification
 
-For many years there were multiple RDF libraries and interfaces available in the JavaScript world. In 2013 the [RDF JavaScript Libraries Community Group](https://www.w3.org/community/rdfjs/) was initiated. A result of this group is the [RDFJS specification](http://rdf.js.org/), a low-level interface for working with RDF and Linked Data in ECMAScript platforms like Web browsers and Node.js.
+For many years there were multiple RDF libraries and interfaces available in the JavaScript world. In 2013 the [RDF JavaScript Libraries Community Group](https://www.w3.org/community/rdfjs/) was initiated. One of the result of this group is the [RDFJS specification](http://rdf.js.org/), a low-level interface for working with RDF and Linked Data in ECMAScript platforms like Web browsers and Node.js.
 
 All libraries described in this document are based on the RDFJS interface and read/write data structures defined in this specification.
 
@@ -14,15 +14,15 @@ All libraries described in this document are based on the RDFJS interface and re
 
 The RDFJS interface is a low-level interface specification. Next to the core-module `rdf-ext` we provide several other module categories that use the same interface:
 
-* **Parsers & serializers**: RDF is a data model and unlike other data models it is not bound to a particular serialization. There are many different formats available, some are plaintext based, others are JSON or XML based or even a binary file. In general one can convert each serialization to another one without any loss of data. Parser and serialiser modules implement the specification of each format and transform it from/to an RDFJS interface structure. Always use these parsers and serializers and avoid doing this in your own code.
+* **Parsers & serializers**: RDF is a data model and unlike other data models it is not bound to a particular serialization. There are many different formats available, some are plain-text based, others are JSON or XML based and even a binary files are available. In general, one can convert each serialization to another one without any loss of data. Parser and serializer modules implement the specification of each format and transform it from/to an RDFJS interface structure. We suggest to always use the provided parsers and serializers and avoid doing this in your own code.
 
-* **Stores**: Stores provide a way to persist RDFJS interface structures. This can be a simple in-memory store or a persistent backend in an RDF graph database (for example a SPARQL endpoint). Each store implements the same abstract interface, if you start with an in-memory store it is easy to switch to a more persistent layer by simply choosing another store implementation. No other code changes are necessary.
+* **Stores**: Stores provide a way to persist RDFJS interface structures. This can be a simple in-memory store or a persistent back-end in an RDF graph database (for example a SPARQL endpoint). Each store implements the same abstract interface, if you start with an in-memory store it is easy to switch to a more persistent layer by simply choosing another store implementation. No other code changes are necessary.
 
-In many cases developers want to work with simpler interfaces to reduce code complexity and focus on solving problems using RDF. For that reason we introduce modules that are built on top of `rdf-ext`:
+In many cases developers want to work with simple interfaces to reduce code complexity and focus on solving problems using RDF. For that reason we introduce modules that are built on top of `rdf-ext`:
 
-* **Dataset**: Dataset is a (work in progress) specification of a high-level interface on top of RDFJS interface specification. It provides additional functions that facilitate interacting with RDF data. Unless you have a good reason to do so, *this is the library you want to start working with.*
+* **Dataset**: Dataset is a (work in progress) specification of a high-level interface on top of the RDFJS interface specification. It provides additional functions that facilitate interacting with RDF data. Unless you have a good reason to do so, *this is the library you want to start working with.*
 
-* **Helpers**: Helpers provide abstractions for common tasks in the RDF programming world exposed as simple interfaces. While you could code everything helpers do on your own, you save quite some lines of code for particular tasks.
+* **Helpers**: Helpers provide abstractions for common tasks in the RDF programming world exposed as simple interfaces. While you could implement the functionality that helpers provide on your own, you save quite some lines of code for particular tasks.
 
 ## Basics
 
@@ -48,7 +48,7 @@ In this example we start with an `rdf` object from the `rdf-ext` package. We the
 
 We then assign the triple to a quad object. This represents the [graph-concept in RDF 1.1](https://www.w3.org/TR/rdf11-primer/#section-multiple-graphs) and can be omitted. In this case the triple is simply added to the so-called "[default graph](http://rdf.js.org/#dom-quad-graph)".
 
-In the last line we use `quad.toString()` to log the triple/quad to the console. In rdf-ext for a triple this is always [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
+In the last line we use `quad.toString()` to log the triple/quad to the console. In rdf-ext, a triple is always in [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end of the line. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
 
 If you want to create a [blank node](https://www.w3.org/TR/rdf11-primer/#section-blank-node) instead of a named-node, simply use the `blankNode` function:
 
@@ -60,9 +60,9 @@ You obviously have to use this identifier both as subject and object if you want
 
 ### Work with triples
 
-Most of the time we want to work with more than one triples so we need to have some kind of container where we can add multiple triples. While one could do that manually by using arrays, a more suitable structure is `dataset`. By using this structure you get several useful functions, for example for matching triples. Also you do not have to take care of duplicate detection so you won't have the same triple twice in your data.
+Most of the time we want to work with more than one triple so we need to have some kind of container where we can add multiple triples. While one could do that manually by using arrays, a more suitable structure is `dataset`. By using this structure you get several useful functions, for example a function for matching triples. Also, `dataset` takes care of detecting duplicates, so you don't have to.
 
-Let us describe a person, in particular the [Sheldon Cooper](https://en.wikipedia.org/wiki/Sheldon_Cooper) from the TV series The Big Bang Theory. We maintain triples about him in a specific GitHub repository, see [here](https://github.com/zazuko/tbbt-ld/blob/master/data/person/sheldon-cooper.ttl). We will mainly use [schema.org/Person](https://schema.org/Person) as vocabulary in this example.
+Let us describe a person, specifically [Sheldon Cooper](https://en.wikipedia.org/wiki/Sheldon_Cooper) from the TV series The Big Bang Theory. We maintain triples about him in a specific GitHub repository, see [here](https://github.com/zazuko/tbbt-ld/blob/master/data/person/sheldon-cooper.ttl). We will mainly use [schema.org/Person](https://schema.org/Person) as vocabulary in this example.
 
 ```javascript
 const rdf = require('rdf-ext')
@@ -86,7 +86,7 @@ console.log(dataset.toString())
 
 ```
 
-This was fun but not what we do all the time in code. It is way more common to load Triples from any RDF serialization and do something with it.
+While this was fun, this is not what we normally do. It is way more common to load Triples from any RDF serialization and then work on them.
 
 ### Parse triples from a file
 
