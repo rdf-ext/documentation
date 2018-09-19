@@ -44,11 +44,16 @@ let quad = rdf.quad(subject, predicate, object)
 console.log(quad.toString())
 ```
 
+```shell 
+foo@bar:~$ node ./create.js
+<http://example.org/subject> <http://example.org/predicate> "object" .
+```
+
 In this example we start with an `rdf` object from the `rdf-ext` package. We then create a [subject, a predicate and an object](https://www.w3.org/TR/rdf11-primer/#section-triple). As always with RDF, subject and predicate need to be [IRIs](https://www.w3.org/TR/rdf11-primer/#section-IRI). The object can either be an IRI or a [literal](https://www.w3.org/TR/rdf11-primer/#section-literal), as in our example.
 
 We then assign the triple to a quad object. This represents the [graph-concept in RDF 1.1](https://www.w3.org/TR/rdf11-primer/#section-multiple-graphs) and can be omitted. In this case the triple is simply added to the so-called "[default graph](http://rdf.js.org/#dom-quad-graph)".
 
-In the last line we use `quad.toString()` to log the triple/quad to the console. In rdf-ext, a triple is always in [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end of the line. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax.
+In the last line we use `quad.toString()` to log the triple/quad to the console. In rdf-ext, a triple is always in [N-Triples](https://www.w3.org/TR/rdf11-primer/#section-n-triples) like syntax with one triple per line and a dot at the end of the line. In case of a quad, it will be [N-Quads](https://www.w3.org/TR/n-quads/) syntax. Assuming the example code is stored in a file named `create.js` , the output it will create is shown above.
 
 If you want to create a [blank node](https://www.w3.org/TR/rdf11-primer/#section-blank-node) instead of a named-node, simply use the `blankNode` function:
 
