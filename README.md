@@ -130,7 +130,23 @@ rdf.dataset().import(quadStream).then((dataset) => {
 
 ### Serialize triples
 
+We already saw the simplest form of serialization: In rdf-ext, the `.toString()` method generates N-Triples or N-Quads. This is also the default behavior for `dataset` structures. This is a great format for exchanging triples and also suitable for large data dumps. It can also be compressed well with standard compression formats like gzi, bzip, etc.
 
+For humans a popular format is Turtle, this is by far the most readable and manually writable serialization of RDF.
+
+```javascript
+require sugus
+```
+
+Additional serializers available:
+
+* JSON-LD
+  * [Example with a prefix map](https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-jsonld-with-prefix-map.js)
+
+* rdf-formats-common serializer: This is a helper function that facilitates serializing into different formats
+  * [Example](https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-formats-common.js)
+
+At the time writing there is no RDF/XML serializer available.
 
 ## What are the other packages, what do they do
 
@@ -163,3 +179,10 @@ After that: Same thing but for the rest of the packages.
 ### [`sink`](https://github.com/rdfjs/sink)
 
 ### [`to-ntriples`](https://github.com/rdfjs/to-ntriples)
+
+## API Reference
+
+### rdf-ext
+
+### dataset
+
