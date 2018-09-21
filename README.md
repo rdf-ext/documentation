@@ -121,32 +121,65 @@ rdf.dataset().import(quadStream).then((dataset) => {
  Additional parsers available:
 
 * [JSON-LD](https://github.com/rdfjs/parser-jsonld)
-
+  * [Specification](https://json-ld.org/spec/latest/json-ld/)
   * [Example for Node.js](https://github.com/rdf-ext/rdf-examples/blob/develop/parse-jsonld-to-dataset.js)
 
   * [Example for browser](https://github.com/rdf-ext/rdf-examples/blob/develop/parse-jsonld-to-dataset.html)
-
 * [RDF/XML](RDF/XML)
+  * [Specification](https://www.w3.org/TR/rdf-syntax-grammar/)
 
 ### Serialize triples
 
-We already saw the simplest form of serialization: In rdf-ext, the `.toString()` method generates N-Triples or N-Quads. This is also the default behavior for `dataset` structures. This is a great format for exchanging triples and also suitable for large data dumps. It can also be compressed well with standard compression formats like gzi, bzip, etc.
-
-For humans a popular format is Turtle, this is by far the most readable and manually writable serialization of RDF.
+We already saw the simplest form of serialization: In rdf-ext, the `.toString()` method generates N-Triples or N-Quads. This is also the default behavior for `dataset` structures. This is a great format for exchanging triples and also suitable for large data dumps. It can also be compressed well with standard compression formats like gzip, bzip, etc. For large based datasets the recommended way to serialize to N-Triples is to use the [specific serializer](https://github.com/rdfjs/serializer-ntriples). Let us revisit the dataset example from above and integrate a proper serializer
 
 ```javascript
-require sugus
+const rdf = require('rdf-ext')
+const Readable = require('stream').Readable
+const SerializerNtriples = require('@rdfjs/serializer-ntriples')
+
+// create a new dataset using the rdf-ext factory
+let dataset = rdf.dataset()
+let bnode = rdf.blankNode()
+
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/givenName'), rdf.literal('Sheldon')))
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/familyName'), rdf.literal('Cooper')))
+dataset.add(rdf.quad(rdf.namedNode('http://example.org/sheldon'), rdf.namedNode('http://schema.org/address'), bnode))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressCountry'), rdf.literal('US')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressLocality'), rdf.literal('Pasadena')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/addressRegion'), rdf.literal('CA')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/postalCode'), rdf.literal('91104')))
+dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/streetAddress'), rdf.literal('2311 North Los Robles Avenue, Aparment 4A')))
+
+// create the serializer
+const serializerNtriples = new SerializerNtriples()
+const input = dataset.toStream()
+const output = serializerNtriples.import(input)
+
+output.on('data', ntriples => {
+  console.log(ntriples.toString())
+})
 ```
+
+You can obviously also stream that directly to a file. Due to the fact that this is stream based, files can be as large as they have to be for your use-case.
+
+Note that with `console.log()` you will get an additional, empty line. This will not happen if you write the output to a file directly.
 
 Additional serializers available:
 
-* JSON-LD
+* [JSON-LD](https://github.com/rdfjs/serializer-jsonld)
   * [Example with a prefix map](https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-jsonld-with-prefix-map.js)
-
 * rdf-formats-common serializer: This is a helper function that facilitates serializing into different formats
   * [Example](https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-formats-common.js)
 
 At the time writing there is no RDF/XML serializer available.
+
+### Use a store
+
+In the introduction we introduced the concept of a `store` abstraction. This interface can be used to persist data, when you develop this might be a simple in-memory store but sooner or later you want to write the data somewhere, for example into an existing triplestore using SPARQL.
+
+We start with a simple [in-memory store](https://github.com/rdf-ext/rdf-store-dataset) based on the dataset structure introduced above. Instead of using the dataset API, you can use the store API and later replace that by a real persistent storage.
+
+
 
 ## What are the other packages, what do they do
 
@@ -185,4 +218,8 @@ After that: Same thing but for the rest of the packages.
 ### rdf-ext
 
 ### dataset
+
+### store
+
+
 
