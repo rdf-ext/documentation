@@ -185,7 +185,7 @@ In our examples we passed data from one object to another, often using either th
 
 The [Store](http://rdf.js.org/#store-interface) interface implements both Source and Sink. If you want to persist data from another structure, you import it to the Store instance by using the `.import()`function. When you want to pass data from a store to another structure, you can use the `.match()` function to get some or all quads back.
 
-Note that there is one exception: [Dataset](https://github.com/rdfjs/representation-task-force/wiki/Dataset-spec) behaves differently, although it does provide both a `.match()` and `.import()` method, they behave differently by design. Please consult the dataset chapter about why. In case you do need Sink and Source interfaces on a dataset structure you need to use [rdf-store-dataset](https://www.npmjs.com/package/rdf-store-dataset) instead, which provides a Source/Sink compatible wrapper around it.
+Note that there is one exception: [Dataset](https://github.com/rdfjs/representation-task-force/wiki/Dataset-spec) behaves differently and does not implement Source and Sink. Although it does provide both a `.match()` and `.import()` method, they behave differently by design. Please consult the Dataset chapter about why. In case you do need Sink and Source interfaces on a dataset structure you need to use [rdf-store-dataset](https://www.npmjs.com/package/rdf-store-dataset) instead, which provides a Source/Sink compatible wrapper around it.
 
 ## What are the other packages, what do they do
 
