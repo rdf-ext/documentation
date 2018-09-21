@@ -177,9 +177,15 @@ At the time writing there is no RDF/XML serializer available.
 
 In the introduction we introduced the concept of a `store` abstraction. This interface can be used to persist data, when you develop this might be a simple in-memory store but sooner or later you want to write the data somewhere, for example into an existing triplestore using SPARQL.
 
-We start with a simple [in-memory store](https://github.com/rdf-ext/rdf-store-dataset) based on the dataset structure introduced above. Instead of using the dataset API, you can use the store API and later replace that by a real persistent storage.
+We start with a simple [in-memory store](https://github.com/rdf-ext/rdf-store-dataset) based on the `dataset` structure introduced above. However, we work with the store API so we can later replace this in-memory back-end with a persistent storage layer.
 
+### Using Sink and Source interfaces
 
+In our examples we passed data from one object to another, often using either the `.import()` or `.match()` functions. These functions are defined in the RDFJS specification, more specifically in [Sink](http://rdf.js.org/#sink-interface) and [Source](http://rdf.js.org/#source-interface). Parsers and serializers typically implement the *Sink* interface and thus provides an `.import()` function. You either pass a text stream (parser) or quad stream (serializer) to this function and it emits either a *quad* (parser) or a *serialized quad* (serializer).
+
+The [Store](http://rdf.js.org/#store-interface) interface implements both Source and Sink. If you want to persist data from another structure, you import it to the Store instance by using the `.import()`function. When you want to pass data from a store to another structure, you can use the `.match()` function to get some or all quads back.
+
+Note that there is one exception: [Dataset](https://github.com/rdfjs/representation-task-force/wiki/Dataset-spec) behaves differently, although it does provide both a `.match()` and `.import()` method, they behave differently by design. Please consult the dataset chapter about why. In case you do need Sink and Source interfaces on a dataset structure you need to use [rdf-store-dataset](https://www.npmjs.com/package/rdf-store-dataset) instead, which provides a Source/Sink compatible wrapper around it.
 
 ## What are the other packages, what do they do
 
@@ -217,9 +223,17 @@ After that: Same thing but for the rest of the packages.
 
 ### rdf-ext
 
-### dataset
+### Dataset
 
-### store
+no, the dataset has a `match()` and `import()` method, but the return values are a little bit different. the rdf-store-dataset can be used, if a source and sink interface is required or a in memory store.
+
+ or promise interface. so `import()` accepts a <Quad>Stream, but returns a Promise. that fits better to the rest of the interface.
+
+and `match()` returns a new dataset
+
+[Spec](https://github.com/rdfjs/representation-task-force/wiki/Dataset-spec)
+
+### Store
 
 
 
