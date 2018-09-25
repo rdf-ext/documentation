@@ -49,6 +49,8 @@ foo@bar:~$ node ./create.js
 <http://example.org/subject> <http://example.org/predicate> "object" .
 ```
 
+[Code for this example](https://github.com/rdf-ext/rdf-examples/blob/develop/rdf-ext-basics.js)
+
 In this example we start with an `rdf` object from the `rdf-ext` package. We then create a [subject, a predicate and an object](https://www.w3.org/TR/rdf11-primer/#section-triple). As always with RDF, subject and predicate need to be [IRIs](https://www.w3.org/TR/rdf11-primer/#section-IRI). The object can either be an IRI or a [literal](https://www.w3.org/TR/rdf11-primer/#section-literal), as in our example.
 
 We then assign the triple to a quad object. This represents the [graph-concept in RDF 1.1](https://www.w3.org/TR/rdf11-primer/#section-multiple-graphs) and can be omitted. In this case the triple is simply added to the so-called "[default graph](http://rdf.js.org/#dom-quad-graph)".
@@ -91,6 +93,8 @@ console.log(dataset.toString())
 
 ```
 
+[Code for this example](https://github.com/rdf-ext/rdf-examples/blob/develop/dataset-add-triples.js)
+
 While this was fun, this is not what we normally do. It is way more common to load Triples from any RDF serialization and then work on them.
 
 ### Parse triples from a file
@@ -117,6 +121,8 @@ rdf.dataset().import(quadStream).then((dataset) => {
 })
 
 ```
+
+ [Code for this example](https://github.com/rdf-ext/rdf-examples/blob/develop/parse-turtle-to-dataset.js)
 
  Additional parsers available:
 
@@ -160,6 +166,8 @@ output.on('data', ntriples => {
 })
 ```
 
+[Code for this example](https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-dataset-ntriples.js)
+
 You can obviously also stream that directly to a file. Due to the fact that this is stream based, files can be as large as they have to be for your use-case.
 
 Note that with `console.log()` you will get an additional, empty line. This will not happen if you write the output to a file directly.
@@ -183,7 +191,7 @@ Note that there is one exception: [Dataset](https://github.com/rdfjs/representat
 
 In case you do need Sink and Source interfaces on a Dataset structure you need to use [rdf-store-dataset](https://www.npmjs.com/package/rdf-store-dataset) instead, which provides a Source/Sink compatible wrapper around it.
 
-### Use a Store
+### Using a Store
 
 In the beginning of this document,  we introduced the concept of a [Store](http://rdf.js.org/#store-interface). This interface can be used to persist data. When you develop some code this might be a simple in-memory store but sooner or later you want to write the data somewhere, for example into an existing triplestore using SPARQL.
 
