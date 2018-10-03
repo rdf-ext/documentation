@@ -67,8 +67,6 @@ If you want to create a [blank node](https://www.w3.org/TR/rdf11-primer/#section
 let bnode = rdf.blankNode()
 ```
 
-You obviously have to use this identifier both as subject and object if you want to create a proper graph structure.
-
 ### Work with triples
 
 Most of the time we want to work with more than one triple so we need to have some kind of container where we can add multiple triples. While one could do that manually by using arrays, a more suitable structure is `dataset`. By using this structure you get several useful functions, for example a function for matching triples. Also, `dataset` takes care of detecting duplicates, so you don't have to.
@@ -94,7 +92,18 @@ dataset.add(rdf.quad(bnode, rdf.namedNode('http://schema.org/streetAddress'), rd
 // log the triples to console with toString()
 // note that this is N-Triples serialization in rdf-ext
 console.log(dataset.toString())
+```
 
+```shell 
+foo@bar:~$ node ./dataset-add-triples.js 
+<http://example.org/sheldon> <http://schema.org/givenName> "Sheldon" .
+<http://example.org/sheldon> <http://schema.org/familyName> "Cooper" .
+<http://example.org/sheldon> <http://schema.org/address> _:b1 .
+_:b1 <http://schema.org/addressCountry> "US" .
+_:b1 <http://schema.org/addressLocality> "Pasadena" .
+_:b1 <http://schema.org/addressRegion> "CA" .
+_:b1 <http://schema.org/postalCode> "91104" .
+_:b1 <http://schema.org/streetAddress> "2311 North Los Robles Avenue, Aparment 4A" .
 ```
 
 [Code for this example](https://github.com/rdf-ext/rdf-examples/blob/develop/dataset-add-triples.js)
